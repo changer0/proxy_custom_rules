@@ -8,6 +8,8 @@
  * Learn more at https://developers.cloudflare.com/workers/
  */
 
+import * as yaml from 'js-yaml';
+
 export interface Env {
 	// Example binding to KV. Learn more at https://developers.cloudflare.com/workers/runtime-apis/kv/
 	// MY_KV_NAMESPACE: KVNamespace;
@@ -27,6 +29,46 @@ export interface Env {
 
 export default {
 	async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
-		return new Response('Hello World!');
+		const url = "https://s1.trojanflare.one/clashx/01641509-e347-467a-b53a-dd06e3e0d488";
+		const init = {
+		};
+		const response = await fetch(url, init);
+		const netConfig = await this.getNetConfig(response);
+		const results = this.appendCustomRules(netConfig)
+
+		return new Response(results, init);
 	},
+
+
+	/**
+ * getNetConfig awaits and returns a response body as a string.
+ * Use await gatherResponse(..) in an async function to get the response body
+ * @param {Response} response
+ */
+	async getNetConfig(response: Response) {
+		const { headers } = response;
+		const contentType = headers.get("content-type") || "";
+		if (contentType.includes("application/json")) {
+			return JSON.stringify(await response.json());
+		}
+		return response.text();
+	},
+	/**
+ * 
+ * 增加自定义规则
+ */
+	appendCustomRules(netConfig: string) {
+		// 将字符串转换为对象
+		var config = yaml.load(netConfig) as any;
+	
+		config.rules = config.rules.filter((item: string) => !item.includes("microsoft"));
+
+		// 添加自定义规则
+		config.rules.push('DOMAIN-KEYWORD,microsoft,Proxy');
+		config.rules.push('DOMAIN-KEYWORD,copilot,Proxy');
+		config.rules.push('DOMAIN-SUFFIX,microsofttranslator.com,Proxy');
+		// 将对象转换回字符串
+		var updatedConfigString = yaml.dump(config);
+		return updatedConfigString;
+	}
 };
