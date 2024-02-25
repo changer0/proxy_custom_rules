@@ -7,6 +7,11 @@ compatibility_date = "2023-05-18"
 # Docs: https://developers.cloudflare.com/workers/platform/environment-variables
 # [vars]
 # MY_VARIABLE = "production_value"
+[vars]
+API_URL = "https://s1.trojanflare.one/clashx/01641509-925f-4119-b758-0298991ac7f7"
+
+
+
 
 # Bind a KV Namespace. Use KV as persistent storage for small key-value pairs.
 # Docs: https://developers.cloudflare.com/workers/runtime-apis/kv
