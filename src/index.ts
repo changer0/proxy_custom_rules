@@ -29,7 +29,7 @@ export interface Env {
 
 export default {
 	async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
-		const url = "https://s1.trojanflare.one/clashx/01641509-e347-467a-b53a-dd06e3e0d488";
+		const url = "https://s1.trojanflare.one/clashx/01641509-925f-4119-b758-0298991ac7f7";
 		const init = {
 		};
 		const response = await fetch(url, init);
