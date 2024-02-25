@@ -11,6 +11,7 @@
 import * as yaml from 'js-yaml';
 
 export interface Env {
+	API_URL: string;
 	// Example binding to KV. Learn more at https://developers.cloudflare.com/workers/runtime-apis/kv/
 	// MY_KV_NAMESPACE: KVNamespace;
 	//
@@ -29,7 +30,7 @@ export interface Env {
 
 export default {
 	async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
-		const url = "https://s1.trojanflare.one/clashx/01641509-925f-4119-b758-0298991ac7f7";
+		const url = env.API_URL;
 		const init = {
 		};
 		const response = await fetch(url, init);
