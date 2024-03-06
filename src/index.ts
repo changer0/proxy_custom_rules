@@ -61,13 +61,17 @@ export default {
 	appendCustomRules(netConfig: string) {
 		// 将字符串转换为对象
 		var config = yaml.load(netConfig) as any;
-	
-		config.rules = config.rules.filter((item: string) => !item.includes("microsoft"));
 
+		// 微软
+		config.rules = config.rules.filter((item: string) => !item.includes("microsoft"));
 		// 添加自定义规则
 		config.rules.push('DOMAIN-KEYWORD,microsoft,Proxy');
 		config.rules.push('DOMAIN-KEYWORD,copilot,Proxy');
 		config.rules.push('DOMAIN-SUFFIX,microsofttranslator.com,Proxy');
+
+		// claude
+		config.rules.push('DOMAIN-KEYWORD,claude,Proxy');
+
 		// 将对象转换回字符串
 		var updatedConfigString = yaml.dump(config);
 		return updatedConfigString;
